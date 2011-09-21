@@ -1,7 +1,3 @@
-var maxSearchResults = 5;
-var maxSuggestionResults = 3;
-var videoLoadingDelayTolerance = 4;
-
 var searchResults, suggestionResults;
 var playedSoFar = new Array();
 
