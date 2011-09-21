@@ -1,125 +1,90 @@
-<!doctype html>
-<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-<head>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>play something by batuhan</title>
 	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link type='text/css' href='style.css' rel='stylesheet'>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		var lastFmApiKey = "6a040e6842f5c100c5a9816c4e28cdaf";
+	</script>
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="youtube.js"></script>
+  </head>
+  
+  <body>
+		<img src='radyo.png' width='150' height='150' id='logo'/>
+
+	<div id='description'>
+		Batuhan's Radyo plays similar tracks one after another. Start by searching a well-known song
+		and enjoy!
+	</div>
 	
-	<title>Batuhan's Radyo</title>
-	
-	<meta name="description" content="Batuhan's Radyo plays similar tracks one after another using Last.fm and YouTube.">
-	<meta name="author" content="Batuhan Icoz (@batuhanicoz)">
+	<div id='about'>
+		<br /><a target='_blank' href='http://github.com/batuhanicoz/radyo'>source code</a>
+		<br />(c) <a target="_blank" href="http://batu.me/1">batuhan icoz</a>.
+	</div>	
 
-	<meta name="viewport" content="width=device-width,initial-scale=1">
-
-	<link rel="stylesheet" href="css/style.css">
-
-</head>
-<body>
-
-<div id="container">
-	<header>
-		<div id='description'>
-			Batuhan's Radyo plays similar tracks one after another. Start by searching a well-known song and enjoy!
+	<div id='search'>
+		<input type='text' name='q' id='q' value='Type an artist or song name'/>
+		<img id='searchLoading' style='display:none' src='ajax.gif'/>
+		
+		<div id='searchResults' display='none' class='resultContainer'>
 		</div>
-	</header>
+	</div>
 	
-	<div id="main" role="main">
-		<div id='search'>
-			<input type='text' name='q' id='q' value='Type an artist or song name'/>
-			<div id='searchLoading' style='display:none'>loading</div>
-
-			<div id='searchResults' display='none' class='resultContainer'>
-			</div>
-		</div>
-
-		<!-- the player -->
-		<div id='playerDiv'>
-	      <div id='displayDiv'>
-	        <div id='title'></div>
-	        <div id='player'></div>
-	      </div>
-	      <div id='controlDiv'>
-	        <div id='seekDiv'>
-	          <span id='currentTime'>0:00</span> / <span id='duration'>0:00</span>
-	          <input type='range' id='seek' title="Seek" min='0' max='0' step='1' value='0'></input>
-	        </div>
-	        <div id='playPauseDiv'>
-	          <svg id='pause' width='25px' height='25px' xmlns='http://www.w3.org/2000/svg' version='1.1'>
-	            <g>
-	              <title>Pause</title>
-	              <rect x='2' y='1' width='8px' height='23px'></rect>
-	              <rect x='15' y='1' width='8px' height='23px'></rect>
-	            </g>
-	          </svg>
-	          <svg id='play' width='25px' height='25px' xmlns='http://www.w3.org/2000/svg' version='1.1'>
-	            <g>
-	              <title>Play</title>
-	              <polygon points='1,1 1,24 20,13'/></polygon>
-	            </g>
-	          </svg>
-	        </div>
-	        <div id='volumeDiv'>
-	          <label for='volume'>Volume</label>
-	          <input type='range' id='volume' title="Volume" min='0' max='100' step='1' value='100'></input>
-	        </div>
-	      </div>
-	    </div>
-		<!-- / player bitti -->
-		<div style='display:none' id='info'>
-
-			<p>
-				<input type='button' id='btnNext' onclick='playNext();' value='Play Next &raquo;'>
-				<input type='button' id='btnShowVideo' onclick='showVideo();' value='Show/Hide Video'>
-
-			</p>
-
-			<img src='' style='float:right;' id='albumCover'/>
-
-			<div id='suggestionLoading' style='display:none'>loading</div>
-			<div id='suggestions' style='display:none;' class='resultContainer'>
-				<div class='heading'>What's next?</div>
-				<div id='suggestionResults'>
-				</div>
+	<!-- the player -->
+	<div id='playerDiv'>
+      <div id='displayDiv'>
+        <div id='title'></div>
+        <div id='player'></div>
+      </div>
+      <div id='controlDiv'>
+        <div id='seekDiv'>
+          <span id='currentTime'>0:00</span> / <span id='duration'>0:00</span>
+          <input type='range' id='seek' title="Seek" min='0' max='0' step='1' value='0'></input>
+        </div>
+        <div id='playPauseDiv'>
+          <svg id='pause' width='25px' height='25px' xmlns='http://www.w3.org/2000/svg' version='1.1'>
+            <g>
+              <title>Pause</title>
+              <rect x='2' y='1' width='8px' height='23px'></rect>
+              <rect x='15' y='1' width='8px' height='23px'></rect>
+            </g>
+          </svg>
+          <svg id='play' width='25px' height='25px' xmlns='http://www.w3.org/2000/svg' version='1.1'>
+            <g>
+              <title>Play</title>
+              <polygon points='1,1 1,24 20,13'/></polygon>
+            </g>
+          </svg>
+        </div>
+        <div id='volumeDiv'>
+          <label for='volume'>Volume</label>
+          <input type='range' id='volume' title="Volume" min='0' max='100' step='1' value='100'></input>
+        </div>
+      </div>
+    </div>
+	<!-- / player bitti -->
+	<div style='display:none' id='info'>
+		
+		<p>
+			<input type='button' id='btnNext' onclick='playNext();' value='Play Next &raquo;'>
+			<input type='button' id='btnShowVideo' onclick='showVideo();' value='Show Video'>
+			<input type='button' id='btnShowVideo' onclick='showVideo();' value='Hide Video' style="display:none;">
+			
+		</p>
+		
+		<img src='' style='float:right;' id='albumCover'/>
+		
+		
+		<div id='suggestionLoading' style='display:none'><img src='ajax.gif'/></div>
+		<div id='suggestions' style='display:none;' class='resultContainer'>
+			<div class='heading'>What's next?</div>
+			<div id='suggestionResults'>
 			</div>
 		</div>
 	</div>
-	<footer>
-		<div id='about'>
-			<br /><a target='_blank' href='http://github.com/batuhanicoz/radyo'>source code</a>
-			<br />(c) <a target="_blank" href="http://batu.me/1">batuhan icoz</a>.
-		</div>
-	</footer>
-	
-	</div> <!--! end of #container -->
-	
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-
-	<script src="js/settings.js" type="text/javascript"></script>
-
-	<script src="js/youtubestuff.js" type="text/javascript"></script>
-
-	<script src="js/app.js" type="text/javascript"></script>
-		
-    <!-- Piwik --> 
-	<script type="text/javascript">
-	var pkBaseURL = (("https:" == document.location.protocol) ? "https://stats.batu.me/" : "http://stats.batu.me/");
-	document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
-	</script><script type="text/javascript">
-	try {
-	var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 4);
-	piwikTracker.trackPageView();
-	piwikTracker.enableLinkTracking();
-	} catch( err ) {}
-	</script><noscript><p><img src="http://stats.batu.me/piwik.php?idsite=4" style="border:0" alt="" /></p></noscript>
-	<!-- End Piwik Tracking Code -->
-	
-	<!--[if lt IE 7 ]>
-		<script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>
-		<script>window.attachEvent("onload",function(){CFInstall.check({mode:"overlay"})})</script>
-	<![endif]-->
-	
+    
   </body>
 </html>

@@ -16,10 +16,10 @@ function playNext(){
 	}
 }
 
-function showVideo(){
-	$('#player').toggle();
-	
-}
+$("#btnShowVideo").click(function () {
+	$("#player").toggle();
+	$("#btnShowVideo").toggle();
+});
 
 function doSearch(q){
 	$('#searchResults').html('');
@@ -60,7 +60,7 @@ function postSearchHook(){
 	searchResults = searchResults.slice(0, maxSearchResults);
 
 	if (searchResults.length == 0){
-		$('#searchResults').html('No results found. Try checking your spelling maybe?');
+		$('#searchResults').html('No results found.');
 	} else {
 		searchResults.map(function(result){
 			main = $('<div />', {
@@ -147,7 +147,7 @@ function renderSuggestionResults(results){
 	$('#suggestionResults').empty();
 
 	if (results.length == 0){
-		$('#suggestionResults').html('No suggestions to play next. Try searching for more known tracks.');
+		$('#suggestionResults').html('No suggestions to play next. Please search for more famous tracks.');
 	} else {
 		results.map(function(result){
 			main = $('<div />', {
@@ -183,6 +183,7 @@ function renderSuggestionResults(results){
 					$(this).parent().remove();
 					if (suggestionResults){
 						var tmp = suggestionResults.shift();
+						//suggestionResults.push(tmp);
 						renderSuggestionResults(suggestionResults);
 					}
 				}
@@ -215,14 +216,13 @@ function startPlayingFromYoutube(artist, title, songname){
 	
 	playedSoFar.push(title);
 
-    // show info and now playing info.
+   // show info and now playing info.
 
 	$('#info').show();
 
 	suggestTracks(artist,title);
 	
 	//player
-	
 	currentIndex = 0;
     videos = [];
 	
