@@ -146,7 +146,7 @@ function renderSuggestionResults(results){
 	$('#suggestionResults').empty();
 
 	if (results.length == 0){
-		$('#suggestionResults').html('No suggestions to play next. Please search for more famous tracks.');
+		$('#suggestionResults').html('No suggestions to play next. Please search for more known tracks.');
 	} else {
 		results.map(function(result){
 			main = $('<div />', {
@@ -182,7 +182,6 @@ function renderSuggestionResults(results){
 					$(this).parent().remove();
 					if (suggestionResults){
 						var tmp = suggestionResults.shift();
-						//suggestionResults.push(tmp);
 						renderSuggestionResults(suggestionResults);
 					}
 				}
