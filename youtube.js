@@ -57,7 +57,6 @@ function onYouTubePlayerAPIReady() {
       'origin': window.location.host
     },
     events: {
-      'onReady': onReady,
       'onStateChange': onStateChange,
       'onPlaybackQualityChange': onPlaybackQualityChange,
       'onError': onError
