@@ -139,7 +139,7 @@ function onStateChange(event) {
       enable('play');
       disable('pause', 'volume', 'seek');
       
-      playNextVideo(player);
+      playNext(player);
     break;
       
     case YT.PlayerState.PLAYING:
