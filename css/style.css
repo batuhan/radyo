@@ -27,14 +27,6 @@ body {
   margin-bottom: 25px;
 }
 
-#title {
-  font-size: 1.5em;
-  width: 640px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 #player {
   float: left;
   display: none;

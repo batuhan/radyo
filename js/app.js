@@ -22,6 +22,7 @@ function showVideo(){
 
 function doSearch(q){
 	$('#searchResults').html('');
+	
 	preSearchHook();
 
 	url = 'http://ws.audioscrobbler.com/2.0/?method=track.search&track='+encodeURIComponent(q)+'&api_key='+ lastFmApiKey;
@@ -48,6 +49,8 @@ function doSearch(q){
 }
 
 function preSearchHook(){
+	$('#what').hide();
+	$('#noresults').hide();
 	$('#loading').show();
 	$('#searchResults').html('');
 	searchResults = new Array();
@@ -59,7 +62,7 @@ function postSearchHook(){
 	searchResults = searchResults.slice(0, maxSearchResults);
 
 	if (searchResults.length == 0){
-		$('#searchResults').html('No results found.');
+		$('#noresults').show();	
 	} else {
 		searchResults.map(function(result){
 			main = $('<div />', {
