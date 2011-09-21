@@ -48,14 +48,14 @@ function doSearch(q){
 }
 
 function preSearchHook(){
-	$('#searchLoading').show();
+	$('#loading').show();
 	$('#searchResults').html('');
 	searchResults = new Array();
 	$('#searchResults').slideDown();
 }
 
 function postSearchHook(){
-	$('#searchLoading').hide();
+	$('#loading').hide();
 	searchResults = searchResults.slice(0, maxSearchResults);
 
 	if (searchResults.length == 0){
@@ -118,11 +118,11 @@ function suggestTracks(artist, title){
 function preSuggestionHook(){
 	$('#suggestionResults').html('');
 	suggestionResults = new Array();
-	$('#suggestionLoading').show();
+	$('#loading').show();
 }
 
 function postSuggestionHook(){
-	$('#suggestionLoading').hide();
+	$('#loading').hide();
 	$('#suggestions').slideDown();
 
 	filteredResults = new Array();
@@ -233,14 +233,14 @@ function startPlayingFromYoutube(artist, title, songname){
 // on document ready
 $(function(){		
 	$('#q').keyup(function(){
-		$('#searchLoading').show();
+		$('#loading').show();
 		if (searchTimeout) clearTimeout(searchTimeout);
 
 		searchTimeout = setTimeout(function(){
 			if ($('#q').val())
 				doSearch($('#q').val());
 			else 
-				$('#searchLoading').hide();
+				$('#loading').hide();
 		}, 500);
 	});
 
