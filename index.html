@@ -31,7 +31,7 @@
 	<div id="main" role="main">
 		<div id='search'>
 			<input type='text' name='q' id='q' value='Type an artist or song name'/>
-			<img id='searchLoading' style='display:none' src='ajax.gif'/>
+			<div id='searchLoading' style='display:none'></div>
 
 			<div id='searchResults' display='none' class='resultContainer'>
 			</div>
@@ -80,7 +80,6 @@
 
 			<img src='' style='float:right;' id='albumCover'/>
 
-
 			<div id='suggestionLoading' style='display:none'></div>
 			<div id='suggestions' style='display:none;' class='resultContainer'>
 				<div class='heading'>What's next?</div>
@@ -110,6 +109,7 @@
 	<script src="js/libs/spin.min.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		var spinner = new Spinner(spinner_opts).spin(spinner_target);
+		var spinner = new Spinner(spinner_opts).spin(spinner_target_2);
 	</script>
 	
     <!-- Piwik --> 
