@@ -1,306 +1,98 @@
 <!DOCTYPE html>
-<head>
-	<title>radyo</title>
+<html>
+  <head>
+    <title>play something</title>
 	<meta charset="utf-8">
-	<script src="jquery-1.5.2.min.js" type="text/javascript" charset="utf-8"></script>
-	
-	<style>
-		html {
-			font-size: 200%;
-			font-family: 'Lucida Grande', 'Helvetica Neue', Arial, sans;
-		}
-		
-		p { margin: 0; margin-bottom: .5em; padding:0;}
-		
-		input {font-size: 80%;}
-		
-		div.resultContainer div.result {
-			text-decoration: underline;
-			clear:both;
-		}
-	
-		div.resultContainer div.result:hover {
-			background-color : #eee;
-		}
-		
-		small {font-size: 11px;}
-		
-		img#albumCover { position:absolute; right: 10px; top:40px; width:200px; height:200px;}
-		
-		a.github { background-image: url(https://a248.e.akamai.net/assets.github.com/img/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67); background-position: 0 0; background-repeat: no-repeat; display: block; width: 150px; height: 150px; overflow: hidden; position: absolute; text-indent: -9999px; right: 0; top: -20px; }
-	</style>
-</head>
-<body onUnload="exit()">
-	<script type='text/javascript'>
-	var lastFmApiKey = "6a040e6842f5c100c5a9816c4e28cdaf";
-	var maxSearchResults = 6;
-	var videoLoadingDelayTolerance = 4;
-	
-	var playerWindow;
-	var searchResults, suggestionResults;
-	var playedSoFar = new Array();
-	
-	var curDuration, curElapsed;
-	var timer;
-	
-	function timerFunction(){
-		if(curElapsed <= curDuration) $('#time').html(strSecs(curElapsed) + '/' + strSecs(curDuration));
-		if (curElapsed > curDuration + videoLoadingDelayTolerance){
-			console.log("Play next");
-			if (timer) {
-				clearInterval(timer);
-			}
-			playNext();
-		} else {
-			curElapsed += 1;
-		}
-	}
-	
-	function strSecs(secs){
-		return Math.floor(secs/60)+':'+secs%60;
-	}
-	
-	function playNext(){
-		if (playerWindow) playerWindow.close(); 
-		
-		if (suggestionResults){
-			nextTrack = suggestionResults.shift();
-			if (nextTrack){
-				console.log('Playing next track:' + nextTrack.name +' by '+ nextTrack.artist);
-				startPlaying(nextTrack);
-			}
-		} else {
-			console.log('No suggestions to play next.');
-		}
-	}
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans+TV' rel='stylesheet' type='text/css'>
+    <link type='text/css' href='style.css' rel='stylesheet'>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript"></script>
+    <script type='text/javascript' src='youtube.js'></script>
+    <script type='text/javascript' src='app.js'></script>
+  </head>
+  
+  <body>
+    <div id='feedDiv'>
+      <form>
+        <input type='text' id='songName' size='40'></input>
+        <input type='submit' id='loadSong' value='play'></input>
+      </form>
+    </div>
 
-	function doSearch(q){
-		$('#searchResults').html('');
-		
-		url = 'http://ws.audioscrobbler.com/2.0/?method=track.search&track='+encodeURIComponent(q)+'&api_key='+ lastFmApiKey;
-		
-		$.get(url, function(xml){
-			preSearchCleanup();
-			
-			$('track', xml).each(function(i){
-				var images = new Array();
-				
-				$(this).find("image").each(function(img){
-					images.push($(this).text());
-				});
-				
-				searchResults.push({
-					name: $(this).find("name").text(),
-					artist: $(this).find("artist").text(),
-					images: images
-				});
-			});
-			
-			postSearchHook();
-		});
-	}
-	
-	function preSearchCleanup(){
-		$('#searchResults').html('');
-		searchResults = new Array();
-		$('#searchResults').slideDown();
-	}
-	
-	function postSearchHook(){
-		searchResults = searchResults.slice(0, maxSearchResults);
-		
-		if (searchResults.length == 0){
-			$('#searchResults').html('No results found.');
-		} else {
-			searchResults.map(function(result){
-				$('<img />', {
-					src: result.images[0], // small
-					width: 34,
-					height: 34,
-					class: 'albumart'					
-				}).prependTo(
-					$('<div />', {
-						class: 'result',
-						text: result.artist + ' - ' + result.name,
-						click: function(){startPlaying(result); 		$('#searchResults').slideUp();}
-					}).appendTo('#searchResults')
-				);
-				
-			});
-		}
-	}
-	
-	function suggestTracks(artist, title){
-		url= 'http://ws.audioscrobbler.com/2.0/?method=track.getsimilar&artist='+ artist +'&track='+ title +'&autocorrect=1&limit=10&api_key='+ lastFmApiKey
-		
-		$.get(url, function(xml){
-			preSuggestionCleanup();
-			
-			$('track', xml).each(function(i){
-				
-				var _images = new Array();
-				
-				$(this).find("image").each(function(img){
-					_images.push($(this).text());
-				});
-				
-				suggestionResults.push({
-					name: $(this).find("name").first().text(),
-					artist: $(this).find("artist").find("name").text(),
-					images: _images
-				});
-			});
-			
-			postSuggestionHook();
-		});
-	}
-	
-	function preSuggestionCleanup(){
-		$('#suggestionResults').html('');
-		suggestionResults = new Array();
-	}
-	
-	function postSuggestionHook(){
-		$('#suggestions').slideDown();
-		
-		filteredResults = new Array();
-		suggestionResults.map(function(track){
-			if (playedSoFar.indexOf(track.name) == -1){
-				filteredResults.push(track);
-			}
-		});
+		<img src='radyo.png' width='150' height='150' id='logo'/>
 
-		suggestionResults = filteredResults;
-		
-		if(suggestionResults.length < 1) $('#btnNext').attr('disabled', 'disabled');
-		else $('#btnNext').removeAttr('disabled');
-
-		renderedResults = suggestionResults.slice(0, 5);
-
-		renderSuggestionResults(renderedResults);
-	}
-	
-	function renderSuggestionResults(results){
-		if (results.length == 0){
-			$('#suggestionResults').html('No suggestions found.');
-		} else {
-			results.map(function(result){
-				$('<img />', {
-					src: result.images[1], // small
-					width: 50,
-					height: 50,
-					class: 'albumart'					
-				}).prependTo(
-					$('<div />', {
-						class: 'result',
-						text: result.artist + ' - ' + result.name,
-						click: function(){startPlaying(result);}
-					}).appendTo('#suggestionResults')
-				);
-			});
-		}
-	}
-	
-	function startPlaying(result){
-		if (result.images){
-			_biggestImg = result.images.pop();
-			if (_biggestImg) $('#albumCover').attr('src', _biggestImg); 
-		}
-		startPlayingFromYoutube(result.artist, result.name);
-	}
-		
-	function startPlayingFromYoutube(artist, title){		
-		preStartPlayingHook();
-		
-		playedSoFar.push(title);
-		
-		var q = encodeURIComponent(artist + ' '+ title);
-		var url = 'https://gdata.youtube.com/feeds/api/videos?max-results=1&q='+q+'&callback=youtubeCallback';
-		$.get(url); // handled by youtubeCallback
-		
-		// show info and now playing info.
-		$('#nowPlaying').html(artist+' - '+title);
-		$('#info').show();
-		
-		suggestTracks(artist,title);
-	}
-	
-	function youtubeCallback(xml){
-		xml = jQuery.parseXML(xml);
-		
-		var video = $('entry', xml).first();
-		if (!video) return;
-		
-		var videoLink = $(video).find('link').attr('href');
-		curDuration = parseInt($(video).find('duration').attr('seconds'));
-		curElapsed = 0;
-		
-		// cancel previous timer, start new.
-		if (timer) clearInterval(timer);
-		
-		setTimeout(function(){
-			timer = setInterval(timerFunction, 1000); // run every second			
-		}, 2*1000);
-
-	
-		launchPlayer(videoLink);
-	}
-
-	function preStartPlayingHook(){
-		$('#player').attr('src', '');
-		$('#btnStop').removeAttr('disabled');
-	}
-	
-	function launchPlayer(link){
-		console.log('Playing video requested for ' + link)
-		
-		if(playerWindow){
-			console.log("Player was open, closing.");
-			playerWindow.close();	
-		} 
-		playerWindow = window.open(link, "player", "resizable=no,scrollbars=no,status=no,width=0,height=0,screenX=999");
-	}
-	
-	
-	function exit(){
-		if (playerWindow) playerWindow.close();
-		if (timer) clearInterval(timer);
-		$('#btnStop').attr('disabled','true');
-		$('#info').slideUp();
-		return true;
-	}
-	
-	// on document ready
-	$(function(){
-		$('#frmSearch').submit(function(){
-			doSearch($('#q').val());
-			return false;
-		});
-	})
-	</script>
-	
-	<form id='frmSearch'>
-		<input type='text' name='q' id='q' />
-		<input type='submit' value='Search' />
-	</form>
-	
-	<div id='searchResults' display='none' class='resultContainer'>
+	<div id='description'>
+		Radyo plays similar tracks one after another. Start by searching a well-known song
+		and enjoy!
 	</div>
+	
+	<div id='about'>
+		original code was made by <a target='_blank' href='http://ahmetalpbalkan.com/'><u>alp</u></a>. and original source-code is <a target='_blank' href='http://github.com/ahmetalpalkan/radyo'>available</a>
+		on Github.
+		<br />For this versions source code, click <a target='_blank' href='http://github.com/batuhanicoz/radyo'>here</a>.
+	</div>	
+	<!--<a class='github' target='_blank' href='http://github.com/ahmetalpbalkan/radyo'>Fork me on GitHub</a>-->
+
+	<div id='search'>
+		<input type='text' name='q' id='q' value='Type an artist or song name'/>
+		<img id='searchLoading' style='display:none' src='ajax.gif'/>
+		
+		<div id='searchResults' display='none' class='resultContainer'>
+		</div>
+	</div>
+	
+	<!-- the player -->
+	<div id='playerDiv'>
+      <div id='displayDiv'>
+        <div id='title'></div>
+        <div id='player'></div>
+      </div>
+      <div id='controlDiv'>
+        <div id='seekDiv'>
+          <span id='currentTime'>0:00</span> / <span id='duration'>0:00</span>
+          <input type='range' id='seek' title="Seek" min='0' max='0' step='1' value='0'></input>
+        </div>
+        <div id='playPauseDiv'>
+          <svg id='pause' width='25px' height='25px' xmlns='http://www.w3.org/2000/svg' version='1.1'>
+            <g>
+              <title>Pause</title>
+              <rect x='2' y='1' width='8px' height='23px'></rect>
+              <rect x='15' y='1' width='8px' height='23px'></rect>
+            </g>
+          </svg>
+          <svg id='play' width='25px' height='25px' xmlns='http://www.w3.org/2000/svg' version='1.1'>
+            <g>
+              <title>Play</title>
+              <polygon points='1,1 1,24 20,13'/></polygon>
+            </g>
+          </svg>
+        </div>
+        <div id='volumeDiv'>
+          <label for='volume'>Volume</label>
+          <input type='range' id='volume' title="Volume" min='0' max='100' step='1' value='100'></input>
+        </div>
+      </div>
+    </div>
+	<!-- / player bitti -->
 	<div style='display:none' id='info'>
+		<span style='display:none;'>
 		Now: <span id='nowPlaying'></span>
 		(<span id='time'></span>)
-		<p>
-		<input type='button' id='btnStop' onclick='exit();' value='Stop'>
-		<input type='button' id='btnNext' onclick='playNext();' value='Skip&raquo;'>
+		</span>
+		
+		<p style='display:none;'>
+			<input type='button' id='btnNext' onclick='playNext();' value='Play Next &raquo;'>
 		</p>
+		
 		<img src='' style='float:right;' id='albumCover'/>
 		
+		
+		<div id='suggestionLoading' style='display:none'><img src='ajax.gif'/></div>
 		<div id='suggestions' style='display:none;' class='resultContainer'>
-			Suggestions to play next in radio:
+			<div class='heading'>What's next?</div>
 			<div id='suggestionResults'>
 			</div>
 		</div>
 	</div>
-	<a class='github' href='http://github.com/ahmetalpbalkan/radyo'>Fork me on GitHub</a>
-</body>
+    
+  </body>
 </html>
