@@ -32,8 +32,12 @@
 
 		  <div class="row">
 		    <div class="span11">
+			  <div class="alert-message info">
+		        <a class="close" href="#">&times;</a>
+		        <p><strong>Heads up!</strong> This application is still in development. May and will break.</p>
+		      </div>
 		      <h3>What is this?</h3>
-		      <p>Radyo plays similar tracks one after another. Just write some song or singer to the search thingy on the topbar!</p>
+		      <p>Batuhan's Radyo<span class="label">ALFA</span> plays similar tracks one after another. Just write some song or singer to the search thingy on the topbar!</p>
 		
 			<div id='search'>
 				<div id='searchResults' display='none' class='resultContainer'>
@@ -107,6 +111,11 @@
     <script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/bootstrap-modal.js"></script>
 
+    <script type="text/javascript" src="js/bootstrap-alerts.js"></script>
+	<script type="text/javascript">
+		$(".alert-message").alert()
+	</script>
+	
     <script type="text/javascript" src="js/youtube.js"></script>
 	<!-- Piwik --> 
 	<script type="text/javascript">
