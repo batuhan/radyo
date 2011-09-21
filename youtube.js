@@ -94,14 +94,6 @@ function onYouTubePlayerAPIReady() {
     setSeekBarInterval();
   });
   
-  $('#loadSong').click(function() {
-    currentIndex = 0;
-    videos = [];
-    
-    getFeed(player, $('#songName').val(), 1);loadSong
-
-    return false;
-  });
 }
 
 function playCurrentVideo(player) {
@@ -127,10 +119,6 @@ function playCurrentVideo(player) {
   } else {
     $('#playerDiv').hide();
   }
-}
-
-function onReady(event) {
-  enable('loadSong');
 }
 
 function onStateChange(event) {

@@ -230,20 +230,21 @@ function startPlaying(result){
 function startPlayingFromYoutube(artist, title, songname){		
 	
 	playedSoFar.push(title);
-	
-	currentIndex = 0;
-    videos = [];
 
-    getFeed(player, songname, 1);loadSong
+   // show info and now playing info.
 
-// show info and now playing info.
 	$('#nowPlaying').html(artist+' - '+title);
 	$('#info').show();
 
 	suggestTracks(artist,title);
+	
+	//player
+	currentIndex = 0;
+    videos = [];
+	
+    getFeed(player, songname, 1);loadSong
 
     return false;
-
 }
 
 // on document ready
