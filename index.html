@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>play something</title>
+    <title>play something by batuhan</title>
 	<meta charset="utf-8">
-    <link href='http://fonts.googleapis.com/css?family=Droid+Sans+TV' rel='stylesheet' type='text/css'>
     <link type='text/css' href='style.css' rel='stylesheet'>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript"></script>
-    <script type='text/javascript' src='app.js'></script>
-    <script type='text/javascript' src='youtube.js'></script>
+	<script type="text/javascript">
+		var lastFmApiKey = "6a040e6842f5c100c5a9816c4e28cdaf";
+	</script>
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="youtube.js"></script>
   </head>
   
   <body>
 		<img src='radyo.png' width='150' height='150' id='logo'/>
 
 	<div id='description'>
-		Radyo plays similar tracks one after another. Start by searching a well-known song
+		Batuhan's Radyo plays similar tracks one after another. Start by searching a well-known song
 		and enjoy!
 	</div>
 	
 	<div id='about'>
-		original code was made by <a target='_blank' href='http://ahmetalpbalkan.com/'><u>alp</u></a>. and original source-code is <a target='_blank' href='http://github.com/ahmetalpalkan/radyo'>available</a>
-		on Github.
-		<br />For this versions source code, click <a target='_blank' href='http://github.com/batuhanicoz/radyo'>here</a>.
+		<br /><a target='_blank' href='http://github.com/batuhanicoz/radyo'>source code</a>
+		<br />(c) <a target="_blank" href="http://batu.me/1">batuhan icoz</a>.
 	</div>	
 
 	<div id='search'>
@@ -66,13 +67,10 @@
     </div>
 	<!-- / player bitti -->
 	<div style='display:none' id='info'>
-		<span style='display:none;'>
-		Now: <span id='nowPlaying'></span>
-		(<span id='time'></span>)
-		</span>
 		
-		<p style='display:none;'>
+		<p>
 			<input type='button' id='btnNext' onclick='playNext();' value='Play Next &raquo;'>
+			<input type='button' id='btnShowVideo' onclick='showVideo();' value='Show Video'>
 		</p>
 		
 		<img src='' style='float:right;' id='albumCover'/>

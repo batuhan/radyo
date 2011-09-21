@@ -1,4 +1,3 @@
-var lastFmApiKey = "6a040e6842f5c100c5a9816c4e28cdaf";
 var maxSearchResults = 5;
 var maxSuggestionResults = 3;
 var videoLoadingDelayTolerance = 4;
@@ -8,25 +7,6 @@ var playedSoFar = new Array();
 
 var searchTimeout;
 
-var curDuration, curElapsed;
-//var timer;
-
-function timerFunction(){
-	if(curElapsed <= curDuration) $('#time').html(strSecs(curElapsed) + '/' + strSecs(curDuration));
-	if (curElapsed > curDuration + videoLoadingDelayTolerance){
-		if (timer) {
-			clearInterval(timer);
-		}
-		playNext();
-	} else {
-		curElapsed += 1;
-	}
-}
-
-function strSecs(secs){
-	return Math.floor(secs/60)+':'+secs%60;
-}
-
 function playNext(){
 	if (suggestionResults){
 		nextTrack = suggestionResults.shift();
@@ -34,6 +14,10 @@ function playNext(){
 			startPlaying(nextTrack);
 		}
 	}
+}
+
+function showVideo(){
+	$('#player').show();
 }
 
 function doSearch(q){
@@ -233,7 +217,6 @@ function startPlayingFromYoutube(artist, title, songname){
 
    // show info and now playing info.
 
-	$('#nowPlaying').html(artist+' - '+title);
 	$('#info').show();
 
 	suggestTracks(artist,title);

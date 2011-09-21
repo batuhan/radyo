@@ -1,5 +1,5 @@
 body {
-  font-family: 'Droid Sans TV', helvetica, arial;
+  font-family: helvetica, arial;
 }
 
 #playerDiv {
@@ -80,7 +80,7 @@ img#albumCover { position:absolute; right: 10px; top:40px;  z-index: -999;}
 
 div#search {  margin-bottom: 1em; width: 500px;}
 
-div#description { font-size: 15px; margin-bottom: 1em; color: #666;}
+div#description { font-size: 15px; color: #666;}
 div#about {position:absolute; bottom:0px; right: 10px; width:250px; font-size: 10px; text-align:right; color: #777;}
 img#logo {position:absolute; top:10px; right:15px;}
 
