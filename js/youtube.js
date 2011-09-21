@@ -11,6 +11,8 @@ var QUERY_PARAMS = 'v=2&format=5&alt=json&fields=entry(title,media:group(media:t
 $(document).ready(function() {
   
   $('#playerDiv').hide();
+  $('#play').hide();
+  $('#pause').hide();
   
   disable('previous', 'pause', 'play', 'next', 'volume', 'seek');
   
@@ -66,12 +68,16 @@ function onYouTubePlayerAPIReady() {
   $('#pause').click(function() {
     if ($(this).attr('disabled') == 'false') {
       player.pauseVideo();
+      $('#pause').hide();
+      $('#play').show();
     }
   });
   
   $('#play').click(function() {
     if ($(this).attr('disabled') == 'false') {
       player.playVideo();
+      $('#play').hide();
+      $('#pause').show();
     }
   });
   
@@ -112,8 +118,9 @@ function playCurrentVideo(player) {
       $('#title').html(currentVideo.title);
       player.loadVideoById(currentVideo.videoid);
       
-      enable('play');
-      disable('pause');
+      $('#play').hide();
+      $('#pause').show();
+
     }
   } else {
     $('#playerDiv').hide();

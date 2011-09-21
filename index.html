@@ -1,90 +1,120 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>play something by batuhan</title>
+    <title>Batuhan's Radyo</title>
 	<meta charset="utf-8">
-    <link type='text/css' href='style.css' rel='stylesheet'>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript"></script>
-	<script type="text/javascript">
-		var lastFmApiKey = "6a040e6842f5c100c5a9816c4e28cdaf";
-	</script>
-    <script type="text/javascript" src="app.js"></script>
-    <script type="text/javascript" src="youtube.js"></script>
+	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
+    <link type='text/css' href='css/style.css' rel='stylesheet'>
   </head>
   
   <body>
-		<img src='radyo.png' width='150' height='150' id='logo'/>
-
-	<div id='description'>
-		Batuhan's Radyo plays similar tracks one after another. Start by searching a well-known song
-		and enjoy!
-	</div>
+	<!-- a class='github' target='_blank' href='http://github.com/batuhanicoz/radyo'>Fork me on GitHub</a -->
 	
-	<div id='about'>
-		<br /><a target='_blank' href='http://github.com/batuhanicoz/radyo'>source code</a>
-		<br />(c) <a target="_blank" href="http://batu.me/1">batuhan icoz</a>.
-	</div>	
-
-	<div id='search'>
-		<input type='text' name='q' id='q' value='Type an artist or song name'/>
-		<img id='searchLoading' style='display:none' src='ajax.gif'/>
-		
-		<div id='searchResults' display='none' class='resultContainer'>
-		</div>
-	</div>
-	
-	<!-- the player -->
-	<div id='playerDiv'>
-      <div id='displayDiv'>
-        <div id='title'></div>
-        <div id='player'></div>
-      </div>
-      <div id='controlDiv'>
-        <div id='seekDiv'>
-          <span id='currentTime'>0:00</span> / <span id='duration'>0:00</span>
-          <input type='range' id='seek' title="Seek" min='0' max='0' step='1' value='0'></input>
-        </div>
-        <div id='playPauseDiv'>
-          <svg id='pause' width='25px' height='25px' xmlns='http://www.w3.org/2000/svg' version='1.1'>
-            <g>
-              <title>Pause</title>
-              <rect x='2' y='1' width='8px' height='23px'></rect>
-              <rect x='15' y='1' width='8px' height='23px'></rect>
-            </g>
-          </svg>
-          <svg id='play' width='25px' height='25px' xmlns='http://www.w3.org/2000/svg' version='1.1'>
-            <g>
-              <title>Play</title>
-              <polygon points='1,1 1,24 20,13'/></polygon>
-            </g>
-          </svg>
-        </div>
-        <div id='volumeDiv'>
-          <label for='volume'>Volume</label>
-          <input type='range' id='volume' title="Volume" min='0' max='100' step='1' value='100'></input>
+	<div class="topbar">
+      <div class="fill">
+        <div class="container">
+          <a class="brand" href="#">Batuhan's Radyo</a>
+          <ul class="nav">
+            <li class="active"><a href="http://static.batu.me/">Home</a></li>
+            <li><a data-controls-modal="modal-about" data-backdrop="true" data-keyboard="true">About</a></li>
+            <li><a href="https://github.com/batuhanicoz/radyo">Source</a></li>
+          </ul>
+		  <input type='text' name='q' id='q' value='Type an artist or song name'/>
         </div>
       </div>
     </div>
-	<!-- / player bitti -->
-	<div style='display:none' id='info'>
+
+	<div class="container">
 		
-		<p>
-			<input type='button' id='btnNext' onclick='playNext();' value='Play Next &raquo;'>
-			<input type='button' id='btnShowVideo' onclick='showVideo();' value='Show Video'>
-			<input type='button' id='btnShowVideo' onclick='showVideo();' value='Hide Video' style="display:none;">
-			
-		</p>
+		<!-- Content
+		================================================== -->
+		<section id="content">
+
+		  <div class="row">
+		    <div class="span11">
+		      <h3>What is this?</h3>
+		      <p>Radyo plays similar tracks one after another. Just write some song or singer to the search thingy on the topbar!</p>
 		
-		<img src='' style='float:right;' id='albumCover'/>
-		
-		
-		<div id='suggestionLoading' style='display:none'><img src='ajax.gif'/></div>
-		<div id='suggestions' style='display:none;' class='resultContainer'>
-			<div class='heading'>What's next?</div>
-			<div id='suggestionResults'>
+			<div id='search'>
+				<div id='searchResults' display='none' class='resultContainer'>
+				</div>
 			</div>
-		</div>
-	</div>
-    
+
+			<!-- the player -->
+			<div id='playerDiv'>
+		      <div id='displayDiv'>
+		        <div id='title'></div>
+		        <div id='player'></div>
+		      </div>
+		      <div id='controlDiv'>
+		        <div id='seekDiv'>
+		          <span id='currentTime'>0:00</span> / <span id='duration'>0:00</span>
+		          <input type='range' id='seek' title="Seek" min='0' max='0' step='1' value='0'></input>
+		        </div>
+		        <div id='volumeDiv'>
+		          <label for='volume'>Volume</label>
+		          <input type='range' id='volume' title="Volume" min='0' max='100' step='1' value='100'></input>
+		        </div>
+		      </div>
+		    </div>
+			<!-- / player bitti -->
+			<div style='display:none' id='info'>
+
+				<div class="actions">
+
+				</div>
+				<div class="actions">
+					<a id="play" class="btn primary">Play</a>
+					<a id="pause" class="btn primary">Pause</a>
+					<input type='button' id='btnNext' onclick='playNext();' class="btn" value='Play Next &raquo;'>
+					<input type='button' id='btnShowVideo' onclick='showVideo();' class="btn" value='Show/Hide Video'>
+					
+
+				</div>
+
+				<img src='' style='float:right;' id='albumCover'/>
+
+
+				<div id='suggestionLoading' style='display:none'><img src='img/ajax.gif'/></div>
+				<div id='suggestions' style='display:none;' class='resultContainer'>
+					<h3>What's next?</h3>
+					<div id='suggestionResults'>
+					</div>
+				</div>
+			</div>
+		    </div>
+		  </div><!-- /row -->
+		</section>
+
+		
+	    <footer class="footer">
+	      <div class="container">
+	        <p class="pull-right"><img id='searchLoading' style='display:none' src='img/ajax.gif'/></p>
+	        <p>
+	          Designed and built with all the love in the world <a href="http://twitter.com/twitter" target="_blank">@twitter</a> by <a href="http://twitter.com/mdo" target="_blank">@mdo</a> and <a href="http://twitter.com/fat" target="_blank">@fat</a>.<br />
+	          Code licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>. Documentation licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.
+	        </p>
+	      </div>
+	    </footer>
+	
+	    <div id="modal-about" class="modal hide fade">
+          <div class="modal-header">
+            <a href="#" class="close">&times;</a>
+            <h3>About Batuhan's Radyo</h3>
+          </div>
+          <div class="modal-body">
+            <p>Lorem ipsum? Nope! Just Chuck Testa!</p>
+          </div>
+        </div>
+
+    </div>
+  	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		var lastFmApiKey = "6a040e6842f5c100c5a9816c4e28cdaf";
+	</script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/bootstrap-modal.js"></script>
+
+    <script type="text/javascript" src="js/youtube.js"></script>
   </body>
 </html>

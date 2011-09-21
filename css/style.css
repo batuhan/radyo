@@ -1,5 +1,26 @@
 body {
-  font-family: helvetica, arial;
+  padding-top: 50px; /* 40px to make the container go all the way to the bottom of the topbar */
+}
+
+.container {
+  width: 640px; /* downsize our container to make the content feel a bit tighter and more cohesive. NOTE: this removes two full columns from the grid, meaning you only go to 14 columns and not 16. */
+}
+
+/* The white background content wrapper */
+.content {
+  background-color: #fff;
+  padding: 20px;
+  margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
+  -webkit-border-radius: 0 0 6px 6px;
+     -moz-border-radius: 0 0 6px 6px;
+          border-radius: 0 0 6px 6px;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+          box-shadow: 0 1px 2px rgba(0,0,0,.15);
+}
+
+.topbar .btn {
+  border: 0;
 }
 
 #playerDiv {
@@ -28,11 +49,6 @@ body {
   float: left;
 }
 
-#playPauseDiv {
-  position: absolute;
-  left: 310px;
-}
-
 #volumeDiv {
   float: right;
 }
@@ -52,11 +68,9 @@ svg[disabled=true] {
 }
 
 // aab's original css
-#q { font-size: 16px; width: 300px; color:#555;}
-
 
 div.resultContainer {
-	width: 700px;
+	width: 640px;
 }
 
 div.resultContainer div.result {
@@ -81,7 +95,5 @@ img#albumCover { position:absolute; right: 10px; top:40px;  z-index: -999;}
 div#search {  margin-bottom: 1em; width: 500px;}
 
 div#description { font-size: 15px; color: #666;}
-div#about {position:absolute; bottom:0px; right: 10px; width:250px; font-size: 10px; text-align:right; color: #777;}
-img#logo {position:absolute; top:10px; right:15px;}
 
 a.github { background-image: url(https://a248.e.akamai.net/assets.github.com/img/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67); background-position: 0 0; background-repeat: no-repeat; display: block; width: 150px; height: 150px; overflow: hidden; position: absolute; text-indent: -9999px; right: 0; top: 0px; }
