@@ -242,7 +242,7 @@ function startPlayingFromYoutube(artist, title, songname){
 	currentIndex = 0;
     videos = [];
 	
-    getFeed(player, songname, 1);loadSong
+    getFeed(player, songname, 1);
 
     return false;
 }
