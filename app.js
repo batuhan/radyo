@@ -16,9 +16,10 @@ function playNext(){
 	}
 }
 
-function showVideo(){
-	$('#player').show();
-}
+$("#btnShowVideo").click(function () {
+	$("#player").toggle();
+	$("#btnShowVideo").toggle();
+});
 
 function doSearch(q){
 	$('#searchResults').html('');
