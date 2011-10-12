@@ -5,6 +5,20 @@
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
     <link type='text/css' href='css/style.css' rel='stylesheet'>
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-11142497-5']);
+	  _gaq.push(['_setDomainName', 'batu.me']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
   </head>
   
   <body>
@@ -95,6 +109,9 @@
 	    <footer class="footer">
 	      <div class="container">
 	        <p class="pull-right"><img id='loading' style='display:none' src='img/ajax.gif'/></p>
+			<p>
+				<div class="fb-like" data-href="http://static.batu.me/radyo" data-send="true" data-width="450" data-show-faces="true"></div>
+			</p>
 	        <p>
 	         original code by <a href="http://ahmetalpbalkan.com">ahmet alp balkan</a> (<a href="https://github.com/ahmetalpbalkan/radyo">on github</a>) and modified by <a href="http://batu.me/1">batuhan içöz</a>.
 	        </p>
@@ -125,17 +142,13 @@
 	</script>
 	
     <script type="text/javascript" src="js/youtube.js"></script>
-	<!-- Piwik --> 
-	<script type="text/javascript">
-	var pkBaseURL = (("https:" == document.location.protocol) ? "https://stats.batu.me/" : "http://stats.batu.me/");
-	document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
-	</script><script type="text/javascript">
-	try {
-	var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 4);
-	piwikTracker.trackPageView();
-	piwikTracker.enableLinkTracking();
-	} catch( err ) {}
-	</script><noscript><p><img src="http://stats.batu.me/piwik.php?idsite=4" style="border:0" alt="" /></p></noscript>
-	<!-- End Piwik Tracking Code -->
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) {return;}
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=250987194917493";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
   </body>
 </html>
