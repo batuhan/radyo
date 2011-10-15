@@ -1,5 +1,5 @@
 var maxSearchResults = 5;
-var maxSuggestionResults = 3;
+var maxSuggestionResults = 6;
 var videoLoadingDelayTolerance = 4;
 
 var searchResults, suggestionResults;
@@ -18,8 +18,13 @@ function playNext(){
 
 function showVideo(){
 	$("#player").toggle();
+	$('#btnShowVideo').toggle();
+	$('#btnHideVideo').toggle();
 }
-
+function showVolume(){
+	$('#volume_div').toggle();
+}
+ 
 function doSearch(q){
 	$('#searchResults').html('');
 	
@@ -119,6 +124,7 @@ function suggestTracks(artist, title){
 }
 
 function preSuggestionHook(){
+	$('#nosuggestions').hide;
 	$('#suggestionResults').html('');
 	suggestionResults = new Array();
 	$('#loading').show();
@@ -149,15 +155,19 @@ function renderSuggestionResults(results){
 	$('#suggestionResults').empty();
 
 	if (results.length == 0){
-		$('#suggestionResults').html('No suggestions to play next. Please search for more known tracks.');
+		$('#nosuggestions').show();
 	} else {
 		results.map(function(result){
-			main = $('<div />', {
+			
+			var songname_with_artist = result.artist + ' by ' + result.name;
+			
+			main = $('<li />', {
 				class: 'result'
 			}).appendTo('#suggestionResults');
-
+			
 			meta = $('<a />', {
 				class: 'meta',
+				rel: 'twipsy',
 				href: '#',
 				click: function(){
 					$('#suggestions').slideUp(
@@ -166,21 +176,12 @@ function renderSuggestionResults(results){
 							return false;
 						});
 				}
-			}).appendTo(main);
-
-			$('<div />', {
-				class: 'title',
-				text: result.name
-			}).appendTo(meta);
-
-			$('<div />', {
-				class: 'artist',
-				text: result.artist
-			}).appendTo(meta);
+			}).attr('title', songname_with_artist).appendTo(main);
 
 			$('<a />', {
-				class: 'actions',
-				text: "✖ Skip",
+				class: 'btn small',
+				id: 'skip_suggestion',
+				text: "Skip",
 				click: function(){
 					$(this).parent().remove();
 					if (suggestionResults){
@@ -188,18 +189,18 @@ function renderSuggestionResults(results){
 						renderSuggestionResults(suggestionResults);
 					}
 				}
-			}).appendTo(main);
-
+			}).appendTo('#suggestions_skip_link');
+			
 			$('<img />', {
-				src: result.images[1], // med
-				width: 64,
-				height: 64,
-				class: 'albumart'					
+				src: result.images[2], // big
+				width: 175,
+				height: 175,
+				class: 'thumbnail'					
 			}).prependTo(
 				meta
 			);
 
-			$('#suggestionResults .actions').hide().first().show();
+			$('#suggestions_skip_link').hide().first().show();
 		});
 	}
 }
@@ -210,16 +211,19 @@ function startPlaying(result){
 		if (_biggestImg) $('#albumCover').attr('src', _biggestImg); 
 	}
 	
-	startPlayingFromYoutube(result.artist, result.name, result.artist + ' ' + result.name);
+	document.title = result.title + " - " + result.artist + " - Batuhan's Radyo";
+	
+	// show info and now playing info.
+	$('#info').show();
+	
+	startPlayingFromYoutube(result.artist, result.name);
 }
 
-function startPlayingFromYoutube(artist, title, songname){		
+function startPlayingFromYoutube(artist, title){		
 	
 	playedSoFar.push(title);
 
    // show info and now playing info.
-
-	$('#info').show();
 
 	suggestTracks(artist,title);
 	
@@ -227,13 +231,33 @@ function startPlayingFromYoutube(artist, title, songname){
 	currentIndex = 0;
     videos = [];
 	
-    getFeed(player, songname, 1);
+    getFeed(player, artist + ' ' + title, 1);
+	$('#source').html('YouTube');
 
     return false;
 }
 
+// Read a page's GET URL variables and return them as an associative array. http://snipplr.com/users/Roshambo/
+function getUrlVars()
+{
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
+
+var q_from_url = getUrlVars()["q"];
+
 // on document ready
-$(function(){		
+$(function(){
+		
+	$("#q").focus();
+		
 	$('#q').keyup(function(){
 		$('#loading').show();
 		if (searchTimeout) clearTimeout(searchTimeout);
@@ -254,5 +278,7 @@ $(function(){
 	$('#q').blur(function(){
 		if (!$(this).val()) $(this).val('Type an artist or song name');
 	})
-
+	
+	$("#q").val(q_from_url);
+	
 });
