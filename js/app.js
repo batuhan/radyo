@@ -159,7 +159,7 @@ function renderSuggestionResults(results){
 	} else {
 		results.map(function(result){
 			
-			var songname_with_artist = result.artist + ' by ' + result.name;
+			var songname_with_artist = result.name + ' by ' + result.artist;
 			
 			main = $('<li />', {
 				class: 'result'
@@ -222,8 +222,6 @@ function startPlaying(result){
 function startPlayingFromYoutube(artist, title){		
 	
 	playedSoFar.push(title);
-
-   // show info and now playing info.
 
 	suggestTracks(artist,title);
 	
