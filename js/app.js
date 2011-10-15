@@ -211,7 +211,7 @@ function startPlaying(result){
 		if (_biggestImg) $('#albumCover').attr('src', _biggestImg); 
 	}
 	
-	document.title = result.title + " - " + result.artist + " - Batuhan's Radyo";
+	document.title = result.name + " - " + result.artist + " - Batuhan's Radyo";
 	
 	// show info and now playing info.
 	$('#info').show();
