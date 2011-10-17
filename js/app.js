@@ -25,44 +25,59 @@ function showVolume(){
 	$('#volume_div').toggle();
 }
  
-function doSearch(q){
-	$('#searchResults').html('');
+function doSearch(q, request_from){
 	
-	preSearchHook();
+	$('#loading').show();
+	
+	if (searchTimeout) clearTimeout(searchTimeout);
 
-	url = 'http://ws.audioscrobbler.com/2.0/?method=track.search&track='+encodeURIComponent(q)+'&api_key='+ lastFmApiKey;
+				searchTimeout = setTimeout(function(){
+					if (q){
+						preSearchHook();
 
-	$.get(url, function(xml){
+						url = 'http://ws.audioscrobbler.com/2.0/?method=track.search&track='+encodeURIComponent(q)+'&api_key='+ lastFmApiKey;
+
+						$.get(url, function(xml){
 
 
-		$('track', xml).each(function(i){
-			var images = new Array();
+							$('track', xml).each(function(i){
+								var images = new Array();
 
-			$(this).find("image").each(function(img){
-				images.push($(this).text());
-			});
+								$(this).find("image").each(function(img){
+									images.push($(this).text());
+								});
 
-			searchResults.push({
-				name: $(this).find("name").text(),
-				artist: $(this).find("artist").text(),
-				images: images
-			});
-		});
+								searchResults.push({
+									name: $(this).find("name").text(),
+									artist: $(this).find("artist").text(),
+									images: images
+								});
+							});
 
-		postSearchHook();
-	});
+							postSearchHook();
+						});
+					}else{
+						$('#loading').hide();
+					}
+				}, 500);
+	
+	console.log('request_from');
 }
 
 function preSearchHook(){
-	$('#what').hide();
+	
+	$("#searchResults").html(""); // clean searchResults
+	
+	$('#what').hide(); 
 	$('#noresults').hide();
-	$('#loading').show();
 	$('#searchResults').html('');
 	searchResults = new Array();
 	$('#searchResults').slideDown();
+	
 }
 
 function postSearchHook(){
+	
 	$('#loading').hide();
 	searchResults = searchResults.slice(0, maxSearchResults);
 
@@ -211,20 +226,20 @@ function startPlaying(result){
 		if (_biggestImg) $('#albumCover').attr('src', _biggestImg); 
 	}
 	
-	document.title = result.name + " - " + result.artist + " - Batuhan's Radyo";
-	
-	// show info and now playing info.
-	$('#info').show();
+	playedSoFar.push(result.name);
+	suggestTracks(result.artist,result.name);
 	
 	startPlayingFromYoutube(result.artist, result.name);
+	
+	document.title = result.name + " by " + result.artist + " - Batuhan's Radyo";
+	
+	// show info and now playing info.
+	$("#info").show();
+	
 }
 
 function startPlayingFromYoutube(artist, title){		
-	
-	playedSoFar.push(title);
 
-	suggestTracks(artist,title);
-	
 	//player
 	currentIndex = 0;
     videos = [];
@@ -233,6 +248,7 @@ function startPlayingFromYoutube(artist, title){
 	$('#source').html('YouTube');
 
     return false;
+
 }
 
 // Read a page's GET URL variables and return them as an associative array. http://snipplr.com/users/Roshambo/
@@ -257,15 +273,7 @@ $(function(){
 	$("#q").focus();
 		
 	$('#q').keyup(function(){
-		$('#loading').show();
-		if (searchTimeout) clearTimeout(searchTimeout);
-
-		searchTimeout = setTimeout(function(){
-			if ($('#q').val())
-				doSearch($('#q').val());
-			else 
-				$('#loading').hide();
-		}, 500);
+		doSearch($('#q').val(), 'keyup');
 	});
 
 	$('#q').focus(function(){
@@ -277,6 +285,9 @@ $(function(){
 		if (!$(this).val()) $(this).val('Type an artist or song name');
 	})
 	
-	$("#q").val(q_from_url);
+	if(q_from_url){
+		$("#q").val(q_from_url);
+		doSearch(q_from_url, 'q_from_url');
+	}
 	
 });
