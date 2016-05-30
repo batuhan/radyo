@@ -35,7 +35,7 @@ function doSearch(q, request_from){
 					if (q){
 						preSearchHook();
 
-						url = 'http://ws.audioscrobbler.com/2.0/?method=track.search&track='+encodeURIComponent(q)+'&api_key='+ lastFmApiKey;
+						url = 'https://ws.audioscrobbler.com/2.0/?method=track.search&track='+encodeURIComponent(q)+'&api_key='+ lastFmApiKey;
 
 						$.get(url, function(xml){
 
@@ -114,7 +114,7 @@ function postSearchHook(){
 }
 
 function suggestTracks(artist, title){
-	url= 'http://ws.audioscrobbler.com/2.0/?method=track.getsimilar&artist='+ artist +'&track='+ title +'&autocorrect=1&api_key='+ lastFmApiKey
+	url= 'https://ws.audioscrobbler.com/2.0/?method=track.getsimilar&artist='+ artist +'&track='+ title +'&autocorrect=1&api_key='+ lastFmApiKey
 
 	preSuggestionHook();		
 
