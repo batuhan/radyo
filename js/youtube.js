@@ -3,7 +3,7 @@ var currentIndex = 0;
 var videos = [];
 
 var DEFAULT_VIDEO_ID = '';
-var URL_PREFIX = 'http://gdata.youtube.com/feeds/api/videos?q=';
+var URL_PREFIX = 'https://gdata.youtube.com/feeds/api/videos?q=';
 var MAX_RESULTS = 1;
 var QUERY_PARAMS = 'v=2&format=5&alt=json&fields=entry(title,media:group(media:thumbnail' +
   '[@yt:name="default"](@url),yt:videoid))&max-results=' + MAX_RESULTS;
@@ -17,7 +17,7 @@ $(document).ready(function() {
   disable('previous', 'pause', 'play', 'next', 'volume', 'seek');
   
   var tag = document.createElement('script');
-  tag.src = 'http://www.youtube.com/player_api';
+  tag.src = 'https://www.youtube.com/player_api';
   var firstScriptTag = document.getElementsByTagName('script')[0];
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 });
